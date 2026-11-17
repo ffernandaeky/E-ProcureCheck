@@ -4,23 +4,19 @@
 
 ### Item Code Verification System
 
-Pemeriksaan kode barang pengadaan yang cepat, sederhana, dan mudah digunakan.
-
-<br>
-
-**PENCARIAN AKURAT** &nbsp; · &nbsp; **HANYA-BACA** &nbsp; · &nbsp; **ID / EN**
+A simple way to check procurement item codes and view matching item details.
 
 </div>
 
-## Tentang
+## About
 
-**E-ProcureCheck** adalah website untuk memverifikasi apakah kode barang tercatat di dalam database pengadaan. Pengguna cukup memasukkan kode barang untuk melihat status dan, jika ditemukan, informasi barang yang terkait.
+**E-ProcureCheck** is a web application for verifying whether an item code is registered in the procurement database. Enter a code to view its verification status and, when a match is found, the related item information.
 
-Antarmuka dirancang ringkas agar proses pemeriksaan terasa jelas dan nyaman di ponsel maupun desktop.
+The interface is designed to make item verification clear and convenient on both mobile and desktop screens.
 
-## Prinsip penggunaan
+## Read-only access
 
-E-ProcureCheck digunakan untuk melihat dan memeriksa informasi barang. Website ini tidak menyediakan fitur untuk menambah, mengubah, atau menghapus data.
+E-ProcureCheck is for viewing and verifying item information. It does not provide features to add, edit, or delete records.
 
 <div align="center">
 
