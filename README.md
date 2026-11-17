@@ -1,17 +1,31 @@
+<div align="center">
+
 # E-ProcureCheck
 
-Website verifikasi kode barang pengadaan.
+### Item Code Verification System
 
-Aplikasi lokal untuk mencari data pengadaan berdasarkan `Unique Code` dengan pencocokan persis. Sumber pengembangan adalah `Dummy_Data_Pengadaan.xlsx` pada sheet `Data Pengadaan`. Workbook dibuka dalam mode read-only; aplikasi tidak membuat data baru dan tidak menyimpan perubahan ke spreadsheet.
+Pemeriksaan kode barang pengadaan yang cepat, sederhana, dan mudah digunakan.
 
-## Menjalankan aplikasi
+<br>
 
-1. Pasang dependensi: `python -m pip install -r requirements.txt`
-2. Jalankan server: `python -m Backend.Main`
-3. Buka <http://127.0.0.1:8000>
+**PENCARIAN AKURAT** &nbsp; · &nbsp; **HANYA-BACA** &nbsp; · &nbsp; **ID / EN**
 
-## Konfigurasi sumber data
+</div>
 
-Pengaturan spreadsheet dummy dan produksi berada terpisah di `Backend/config.py`. Pencarian dan tampilan aplikasi menggunakan antarmuka sumber data di `Backend/data_sources.py`. Sumber aktif saat ini adalah `dummy`; adapter sumber produksi perlu dikonfigurasi sebelum sumber tersebut dipilih.
+## Tentang
 
-Nomor kolom memakai indeks mulai dari 1: Unique Code di kolom A, header di baris 1, data mulai baris 2, dan kolom tampilan B–F. Kode dicocokkan sebagai string utuh tanpa menghapus spasi atau mengubah kapitalisasi. Nilai kode bertipe teks dipertahankan persis; nilai angka dengan format nol di Excel juga dikonversi dengan mempertahankan nol di depan.
+**E-ProcureCheck** adalah website untuk memverifikasi apakah kode barang tercatat di dalam database pengadaan. Pengguna cukup memasukkan kode barang untuk melihat status dan, jika ditemukan, informasi barang yang terkait.
+
+Antarmuka dirancang ringkas agar proses pemeriksaan terasa jelas dan nyaman di ponsel maupun desktop.
+
+## Prinsip penggunaan
+
+E-ProcureCheck digunakan untuk melihat dan memeriksa informasi barang. Website ini tidak menyediakan fitur untuk menambah, mengubah, atau menghapus data.
+
+<div align="center">
+
+---
+
+**E-ProcureCheck** | *Procurement item verification*
+
+</div>
