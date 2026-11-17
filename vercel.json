@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/**/*.py": {
+      "includeFiles": "Dummy_Data_Pengadaan.xlsx"
+    }
+  },
+  "rewrites": [
+    { "source": "/", "destination": "/Frontend/index.html" },
+    { "source": "/styles.css", "destination": "/Frontend/styles.css" },
+    { "source": "/app.js", "destination": "/Frontend/app.js" }
+  ]
+}
