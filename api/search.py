@@ -1,43 +1,79 @@
-"""Vercel function for exact item-code lookup."""
+"""WSGI application for the Vercel deployment."""
 
 import json
-from http.server import BaseHTTPRequestHandler
-from urllib.parse import parse_qs, urlparse
+from pathlib import Path
+from urllib.parse import parse_qs
 
 from Backend.data_sources import get_data_source
 
 
-class handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        query = parse_qs(urlparse(self.path).query, keep_blank_values=True)
-        code_values = query.get("code", [])
-        code = code_values[0] if code_values else ""
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+STATIC_FILES = {
+    "/": (PROJECT_ROOT / "Frontend" / "index.html", "text/html; charset=utf-8"),
+    "/styles.css": (PROJECT_ROOT / "Frontend" / "styles.css", "text/css; charset=utf-8"),
+    "/app.js": (PROJECT_ROOT / "Frontend" / "app.js", "text/javascript; charset=utf-8"),
+}
 
+
+def _respond(start_response, status, body, content_type):
+    headers = [
+        ("Content-Type", content_type),
+        ("Content-Length", str(len(body))),
+        ("Cache-Control", "no-store"),
+    ]
+    start_response(status, headers)
+    return [body]
+
+
+def _json_response(start_response, status, payload):
+    body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    return _respond(start_response, status, body, "application/json; charset=utf-8")
+
+
+def app(environ, start_response):
+    """Serve the static frontend and exact-match lookup through one WSGI app."""
+    method = environ.get("REQUEST_METHOD", "GET").upper()
+    path = environ.get("PATH_INFO", "/")
+
+    if method not in {"GET", "HEAD"}:
+        return _respond(start_response, "405 Method Not Allowed", b"Method not allowed.", "text/plain; charset=utf-8")
+
+    if path == "/api/search":
+        params = parse_qs(environ.get("QUERY_STRING", ""), keep_blank_values=True)
+        codes = params.get("code", [])
+        code = codes[0] if codes else ""
         if not code:
-            self.send_json(400, {"error": "Enter an item code."})
-            return
+            return _json_response(start_response, "400 Bad Request", {"error": "Enter an item code."})
 
         try:
             record = get_data_source().find_by_unique_code(code)
         except Exception:
-            # Keep implementation details and tracebacks out of public responses.
-            self.send_json(503, {"status": "unavailable", "error": "The data source is unavailable."})
-            return
+            # Keep internal paths and tracebacks out of public responses.
+            return _json_response(
+                start_response,
+                "503 Service Unavailable",
+                {"status": "unavailable", "error": "The data source is unavailable."},
+            )
 
         if record is None:
-            self.send_json(404, {"status": "not-found", "error": "Item code was not found."})
-            return
+            return _json_response(
+                start_response,
+                "404 Not Found",
+                {"status": "not-found", "error": "Item code was not found."},
+            )
+        return _json_response(start_response, "200 OK", {"status": "found", "record": record})
 
-        self.send_json(200, {"status": "found", "record": record})
+    static_file = STATIC_FILES.get(path)
+    if static_file:
+        file_path, content_type = static_file
+        try:
+            body = file_path.read_bytes()
+        except OSError:
+            return _respond(start_response, "404 Not Found", b"Not found.", "text/plain; charset=utf-8")
+        if method == "HEAD":
+            body = b""
+        return _respond(start_response, "200 OK", body, content_type)
 
-    def do_POST(self):
-        self.send_json(405, {"error": "Method not allowed."})
-
-    def send_json(self, status, payload):
-        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-        self.send_response(status)
-        self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Cache-Control", "no-store")
-        self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
+    if path.startswith("/api/"):
+        return _json_response(start_response, "404 Not Found", {"error": "API route not found."})
+    return _respond(start_response, "404 Not Found", b"Not found.", "text/plain; charset=utf-8")

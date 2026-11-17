@@ -1,2 +1,2 @@
 [tool.vercel]
-entrypoint = "api.search:handler"
+entrypoint = "api.search:app"
