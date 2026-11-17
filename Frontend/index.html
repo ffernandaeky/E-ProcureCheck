@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17365D">
+  <meta name="description" content="Verify procurement item codes against the PROCURECHECK database.">
+  <title>PROCURECHECK | Item Verification</title>
+  <link rel="stylesheet" href="/styles.css?v=20261117-3">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="PROCURECHECK home">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4 4m-12.2-9.2 1.8 1.8 3.5-3.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="brand-copy"><strong>PROCURECHECK</strong><span data-copy="brandSubtitle">ITEM VERIFICATION SYSTEM</span></span>
+    </a>
+    <div class="header-controls">
+      <button id="theme-toggle" class="icon-button" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.2 15.1A8.5 8.5 0 0 1 8.9 3.8 8.6 8.6 0 1 0 20.2 15.1Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </button>
+      <div class="language-switch" role="group" aria-label="Language">
+        <button type="button" data-language="id" aria-pressed="false">ID</button>
+        <button type="button" data-language="en" aria-pressed="true">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="content-wrap">
+      <section class="intro" aria-labelledby="welcome-title">
+        <h1 id="welcome-title" data-copy="title">Item Code Verification</h1>
+        <p data-copy="intro">Check an item code against the procurement database.</p>
+      </section>
+      <section class="verification-panel" aria-labelledby="code-label">
+        <form id="search-form" novalidate>
+          <label id="code-label" for="code" data-copy="label">Enter Item Code</label>
+          <div class="input-wrap">
+            <input id="code" name="code" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="e.g. PRC-2026-000001" aria-describedby="input-hint" required>
+            <button id="clear-button" class="clear-button" type="button" aria-label="Clear item code" title="Clear item code" disabled><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m6 6 8 8m0-8-8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+          </div>
+          <p id="input-hint" class="input-hint" data-copy="hint">Exact match. Codes are case-sensitive.</p>
+          <button type="submit" id="search-button" class="verify-button"><span id="search-label" data-copy="button">Check Item Code</span><span class="loading-spinner" aria-hidden="true"></span></button>
+        </form>
+        <p id="message" class="message" role="status" aria-live="polite"></p>
+      </section>
+      <section id="result" class="result" hidden aria-live="polite" aria-label="Verification result">
+        <div class="result-banner" id="result-banner" data-status="found">
+          <span class="result-symbol" aria-hidden="true">
+            <svg class="result-svg found-svg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m7.8 12.1 2.7 2.7 5.7-5.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg class="result-svg not-found-svg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m9 9 6 6m0-6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <svg class="result-svg duplicate-svg" viewBox="0 0 24 24" fill="none"><path d="m12 3 9 16H3l9-16Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 9v4m0 3h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+          <div><h2 id="result-title">Item Found</h2><p id="result-description">Registered in the procurement database.</p></div>
+        </div>
+        <dl id="result-fields" class="fields"></dl>
+      </section>
+    </div>
+  </main>
+  <script src="/app.js?v=20261117-2" defer></script>
+</body>
+</html>
